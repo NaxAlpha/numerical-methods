@@ -169,11 +169,30 @@ disp(int2-int1)
 %
 
 % Lets Define Equations
-F = 
+F = {@(x1,x2,x3)6*x1-2*cos(x2*x3)-1,
+    @(x1,x2,x3)9*x2+sqrt(x1^2+sin(x3)+1.06)+0.9,
+    @(x1,x2,x3)60*x3+3*exp(-x1*x2)+10*pi-3};
+xi = [1;2;3]; % MUST be A COLUMN VECTOR
+[x,n,e]=NewtonMethodMulti(F,xi,1e-10,Inf);
+fprintf('Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithin %d Iterations with accuracy of %g\n',x(1),x(2),x(3),n,e);
 
+%% Question 4
+% In this Question, we are going to solve 3rd order ordinary differential
+% equation using Runge-Kutta Method of second order. 
+
+% Lets ODE define function:
+f = @(t,y,p,q)q/t - 3*p/t^2 + 4*y/t^3 + 5*log(t)-9;
+% Lets Define Real solution
+g = @(t)-t^2+t*cos(ln(t))+t*sin(ln(t))+t^3*ln(t);
+
+y = 0; p = 1; q = 3;
+
+for i=1:0.1:2
+    
+end
 
 %% Disclaimer
-% This Assignment contains implementation of few _Numerical Methods_ which
-% are highly optimized and vectorized to provide maximum performance
-% without loss of accuracy. These methods are not copied from internet
+% This Assignment contains implementation of few _Numerical Methods_ some 
+% of which are highly optimized and vectorized to provide maximum performance
+% without loss of accuracy. These methods have not copied from any internet
 % source but made by myself to test my knowledge of matlab.

@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Numerical Methods</h1><!--introduction--><p><b>Assignment 3</b></p><p>In this assignment, We will compare following properties of each method</p><div><ol><li>Accuracy</li><li>Number of Iterations</li><li>Average CPU Cost per iteration</li></ol></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 1</a></li><li><a href="#6">Question 2</a></li><li><a href="#11">Question 3</a></li><li><a href="#12">Disclaimer</a></li></ul></div><h2 id="1">Question 1</h2><p>In this question, we will compare three different methods for finding roots of equation:</p><div><ol><li>False-Position Method</li><li>Secant Method</li><li>Newton's Method</li></ol></div><pre class="codeinput"><span class="comment">% Lets Define Function</span>
+  </style></head><body><div class="content"><h1>Numerical Methods</h1><!--introduction--><p><b>Assignment 3</b></p><p>In this assignment, We will compare following properties of each method</p><div><ol><li>Accuracy</li><li>Number of Iterations</li><li>Average CPU Cost per iteration</li></ol></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Student</a></li><li><a href="#2">Question 1</a></li><li><a href="#7">Question 2</a></li><li><a href="#12">Question 3</a></li><li><a href="#13">Question 4</a></li><li><a href="#14">Disclaimer</a></li></ul></div><h2 id="1">Student</h2><div><ul><li><b>Name:</b>       Nauman Mustafa</li><li><b>CMS ID:</b>     111233</li><li><b>Reg No:</b>     32587</li></ul></div><h2 id="2">Question 1</h2><p>In this question, we will compare three different methods for finding roots of equation:</p><div><ol><li>False-Position Method</li><li>Secant Method</li><li>Newton's Method</li></ol></div><pre class="codeinput"><span class="comment">% Lets Define Function</span>
 f = @(x) 230*x^4 + 18*x^3 + 9*x^2 - 221*x - 9; <span class="comment">% Similar to Inline but symbolically</span>
 <span class="comment">% Lets Define Derivative</span>
 df = @(x)  920*x^3 + 54*x^2 + 18*x - 221;
@@ -228,7 +228,7 @@ Solution of Function For Initial Value 0.5:
 Solution of Function For Initial guess:
 	Root: 0.962398 in 6 Iterations
 	With Error 3.92917e-08 and Time 0ms per Iteration
-</pre><p>Thus we can compare results as following</p><div><ul><li>CPU time per iteration is too small to be measured</li><li><i>False Position Method</i> provides reasonable result within interval as compared to other methods which don't remain in interval</li><li>Although <i>Secant Method</i> for first solution converges quicker then <i>Newton's Method</i> but in general <b>Newton's Method</b> is more robust and has high convergance rate as compared to <i>Secant Method</i></li></ul></div><h2 id="6">Question 2</h2><p>In this question we will compare two methods specifically simpson's methods for finding integral of function on given interval:</p><div><ol><li>Simpson's 1/3 Rule</li><li>Simpson's 3/8 Rule</li></ol></div><pre class="codeinput"><span class="comment">% Let's Deffine Function of Integration</span>
+</pre><p>Thus we can compare results as following</p><div><ul><li>CPU time per iteration is too small to be measured</li><li><i>False Position Method</i> provides reasonable result within interval as compared to other methods which don't remain in interval</li><li>Although <i>Secant Method</i> for first solution converges quicker then <i>Newton's Method</i> but in general <b>Newton's Method</b> is more robust and has high convergance rate as compared to <i>Secant Method</i></li></ul></div><h2 id="7">Question 2</h2><p>In this question we will compare two methods specifically simpson's methods for finding integral of function on given interval:</p><div><ol><li>Simpson's 1/3 Rule</li><li>Simpson's 3/8 Rule</li></ol></div><pre class="codeinput"><span class="comment">% Let's Deffine Function of Integration</span>
 f = @(x)sin(x).^2-2*x.*sin(x)+1;
 </pre><p><b>Simpson's 1/3 Rule</b></p><p>Following is Optimized Algorithm for Simpson's 1/3 Rule:</p><pre class="language-matlab">
 <span class="keyword">function</span> int = Simpson13(f, nSubInt, a, b)
@@ -262,7 +262,7 @@ fprintf(<span class="string">'Simpson 3/8 Result: %g\n'</span>,int2);
 </pre><pre class="codeoutput">Simpson 3/8 Result: -0.489019
 </pre><p>Following Comparision shows there is a little difference between result of <i>Simpson's 1/3 Rule</i> and <i>Simpson 3/8 Rule</i>.</p><pre class="codeinput">disp(int2-int1)
 </pre><pre class="codeoutput">    -8.196000051974295e-07
-</pre><div><ul><li>Error of both rules is of order of 4</li><li>Only difference in error is factor 8/27</li><li>Thus <b>Simpson's 1/3 Rule</b> error is 8/27 times the error of 3/8 Rule</li><li>From Code Point of view, Simpson's 3/8 Rule is better for serial code execution whereas Simpson's 3/8 is useful when parallel execution is required to accelerate computations</li></ul></div><h2 id="11">Question 3</h2><p>In this question, we will solve three equations each function of three variable to achieve accuracy of 10^-6 using newton's method for solution of multiple equations</p><pre class="language-matlab">
+</pre><div><ul><li>Error of both rules is of order of 4</li><li>Only difference in error is factor 8/27</li><li>Thus <b>Simpson's 1/3 Rule</b> error is 8/27 times the error of 3/8 Rule</li><li>From Code Point of view, Simpson's 3/8 Rule is better for serial code execution whereas Simpson's 3/8 is useful when parallel execution is required to accelerate computations</li></ul></div><h2 id="12">Question 3</h2><p>In this question, we will solve three equations each function of three variable to achieve accuracy of 10^-6 using newton's method for solution of multiple equations</p><pre class="language-matlab">
 <span class="comment">% F is cell array of anonymous functions which are to be zeroed</span>
 <span class="comment">% Number of elements in F is same as number of variables in each f</span>
 <span class="comment">% xi is initial guess column vector with length equal to F's len.</span>
@@ -311,7 +311,35 @@ fprintf(<span class="string">'Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithi
 </pre><pre class="codeoutput">Got Solution with 
 	x1=0.498145	x2=-0.199606	x3=-0.528826
 	Within 6 Iterations with accuracy of 1.4988e-15
-</pre><h2 id="12">Disclaimer</h2><p>This Assignment contains implementation of few <i>Numerical Methods</i> which are highly optimized and vectorized to provide maximum performance without loss of accuracy. These methods are not copied from internet source but made by myself to test my knowledge of matlab.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+</pre><h2 id="13">Question 4</h2><p>In this Question, we are going to solve 3rd order ordinary differential equation using Runge-Kutta Method of second order.</p><pre class="codeinput"><span class="comment">% Lets ODE define function:</span>
+f = @(t,y,p,q)q/t - 3*p/t^2 + 4*y/t^3 + 5*log(t)-9;
+<span class="comment">% Lets Define Real solution</span>
+g = @(t)-t^2+t*cos(log(t))+t*sin(log(t))+t^3*log(t);
+
+<span class="comment">% Initial Conditions</span>
+y = 0; p = 1; q = 3;
+
+
+
+fprintf(<span class="string">'Time\tReal Solution\tApproximate Solution\n'</span>);
+<span class="keyword">for</span> t=1:0.1:2
+    yr = g(t);
+    fprintf(<span class="string">'%g\t%f\t%f\n'</span>,t, yr, y);
+    [y, p, q] = RK32(t, y, p, q, 0.1, f);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Time	Real Solution	Approximate Solution
+1	0.000000	0.000000
+1.1	0.116548	0.115000
+1.2	0.272738	0.250873
+1.3	0.479102	0.398033
+1.4	0.746998	0.546894
+1.5	1.088493	0.688005
+1.6	1.516265	0.812135
+1.7	2.043536	0.910322
+1.8	2.684015	0.973903
+1.9	3.451846	0.994528
+2	4.361578	0.964166
+</pre><h2 id="14">Disclaimer</h2><p>This Assignment contains implementation of few <i>Numerical Methods</i> some of which are highly optimized and vectorized to provide maximum performance without loss of accuracy. These methods have not copied from any internet source but made by myself to test my knowledge of matlab.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Numerical Methods
 % *Assignment 3*
@@ -322,6 +350,11 @@ fprintf(<span class="string">'Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithi
 % # Number of Iterations
 % # Average CPU Cost per iteration
 %
+%% Student
+% * *Name:*       Nauman Mustafa
+% * *CMS ID:*     111233
+% * *Reg No:*     32587
+
 %% Question 1
 % In this question, we will compare three different methods for finding
 % roots of equation:
@@ -491,10 +524,32 @@ xi = [1;2;3]; % MUST be A COLUMN VECTOR
 [x,n,e]=NewtonMethodMulti(F,xi,1e-10,Inf);
 fprintf('Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithin %d Iterations with accuracy of %g\n',x(1),x(2),x(3),n,e);
 
+%% Question 4
+% In this Question, we are going to solve 3rd order ordinary differential
+% equation using Runge-Kutta Method of second order. 
+
+% Lets ODE define function:
+f = @(t,y,p,q)q/t - 3*p/t^2 + 4*y/t^3 + 5*log(t)-9;
+% Lets Define Real solution
+g = @(t)-t^2+t*cos(log(t))+t*sin(log(t))+t^3*log(t);
+
+% Initial Conditions
+y = 0; p = 1; q = 3;
+
+
+
+fprintf('Time\tReal Solution\tApproximate Solution\n');
+for t=1:0.1:2
+    yr = g(t);
+    fprintf('%g\t%f\t%f\n',t, yr, y);
+    [y, p, q] = RK32(t, y, p, q, 0.1, f);
+end
+
 %% Disclaimer
-% This Assignment contains implementation of few _Numerical Methods_ which
-% are highly optimized and vectorized to provide maximum performance
-% without loss of accuracy. These methods are not copied from internet
+% This Assignment contains implementation of few _Numerical Methods_ some 
+% of which are highly optimized and vectorized to provide maximum performance
+% without loss of accuracy. These methods have not copied from any internet
 % source but made by myself to test my knowledge of matlab.
+
 ##### SOURCE END #####
 --></body></html>

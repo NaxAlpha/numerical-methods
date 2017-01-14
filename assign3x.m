@@ -7,6 +7,11 @@
 % # Number of Iterations
 % # Average CPU Cost per iteration
 %
+%% Student
+% * *Name:*       Nauman Mustafa
+% * *CMS ID:*     111233
+% * *Reg No:*     32587
+
 %% Question 1
 % In this question, we will compare three different methods for finding
 % roots of equation:
@@ -176,8 +181,29 @@ xi = [1;2;3]; % MUST be A COLUMN VECTOR
 [x,n,e]=NewtonMethodMulti(F,xi,1e-10,Inf);
 fprintf('Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithin %d Iterations with accuracy of %g\n',x(1),x(2),x(3),n,e);
 
+%% Question 4
+% In this Question, we are going to solve 3rd order ordinary differential
+% equation using Runge-Kutta Method of second order. 
+
+% Lets ODE define function:
+f = @(t,y,p,q)q/t - 3*p/t^2 + 4*y/t^3 + 5*log(t)-9;
+% Lets Define Real solution
+g = @(t)-t^2+t*cos(log(t))+t*sin(log(t))+t^3*log(t);
+
+% Initial Conditions
+y = 0; p = 1; q = 3;
+
+
+
+fprintf('Time\tReal Solution\tApproximate Solution\n');
+for t=1:0.1:2
+    yr = g(t);
+    fprintf('%g\t%f\t%f\n',t, yr, y);
+    [y, p, q] = RK32(t, y, p, q, 0.1, f);
+end
+
 %% Disclaimer
-% This Assignment contains implementation of few _Numerical Methods_ which
-% are highly optimized and vectorized to provide maximum performance
-% without loss of accuracy. These methods are not copied from internet
+% This Assignment contains implementation of few _Numerical Methods_ some 
+% of which are highly optimized and vectorized to provide maximum performance
+% without loss of accuracy. These methods have not copied from any internet
 % source but made by myself to test my knowledge of matlab.

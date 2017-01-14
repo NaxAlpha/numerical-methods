@@ -1,0 +1,6 @@
+% RK Method of Order 2 for 3rd order Equation & Single Iteration
+% Not very generic implementation of RK method
+% f := f(q,p,y,t)
+function [y1, p1, q1] = RK32(t0, y0, p0, q0, h, f)
+    k1 = h*  
+end
