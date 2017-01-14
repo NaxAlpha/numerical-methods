@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Numerical Methods</h1><!--introduction--><p><b>Assignment 3</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 1)</a></li></ul></div><h2 id="1">Question 1)</h2><p>In this question, we will compare three different methods for finding roots of equation:</p><div><ol><li>False-Position Method</li><li>Secant Method</li><li>Newton's Method</li></ol></div><p>We will compare following properties of each method</p><div><ol><li>Accuracy</li><li>Number of Iterations</li><li>Average CPU Cost per iteration</li></ol></div><pre class="codeinput"><span class="comment">% Lets Define Function</span>
+  </style></head><body><div class="content"><h1>Numerical Methods</h1><!--introduction--><p><b>Assignment 3</b></p><p>In this assignment, We will compare following properties of each method</p><div><ol><li>Accuracy</li><li>Number of Iterations</li><li>Average CPU Cost per iteration</li></ol></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 1</a></li><li><a href="#6">Question 2</a></li><li><a href="#11">Question 3</a></li><li><a href="#12">Disclaimer</a></li></ul></div><h2 id="1">Question 1</h2><p>In this question, we will compare three different methods for finding roots of equation:</p><div><ol><li>False-Position Method</li><li>Secant Method</li><li>Newton's Method</li></ol></div><pre class="codeinput"><span class="comment">% Lets Define Function</span>
 f = @(x) 230*x^4 + 18*x^3 + 9*x^2 - 221*x - 9; <span class="comment">% Similar to Inline but symbolically</span>
 <span class="comment">% Lets Define Derivative</span>
 df = @(x)  920*x^3 + 54*x^2 + 18*x - 221;
@@ -172,7 +172,7 @@ fprintf(sFormat,x,n,e,t*1000/n);
 =====================
 Solution of Function For Interval [-1, 0]:
 	Root: -0.0406593 in 4 Iterations
-	With Error 6.33017e-07 and Time 7.8125ms per Iteration
+	With Error 6.33017e-07 and Time 0ms per Iteration
 Solution of Function For Interval [0, 1]:
 	Root: -0.0406593 in 12 Iterations
 	With Error 4.60525e-12 and Time 0ms per Iteration
@@ -228,24 +228,58 @@ Solution of Function For Initial Value 0.5:
 Solution of Function For Initial guess:
 	Root: 0.962398 in 6 Iterations
 	With Error 3.92917e-08 and Time 0ms per Iteration
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+</pre><p>Thus we can compare results as following</p><div><ul><li>CPU time per iteration is too small to be measured</li><li><i>False Position Method</i> provides reasonable result within interval as compared to other methods which don't remain in interval</li><li>Although <i>Secant Method</i> for first solution converges quicker then <i>Newton's Method</i> but in general <b>Newton's Method</b> is more robust and has high convergance rate as compared to <i>Secant Method</i></li></ul></div><h2 id="6">Question 2</h2><p>In this question we will compare two methods specifically simpson's methods for finding integral of function on given interval:</p><div><ol><li>Simpson's 1/3 Rule</li><li>Simpson's 3/8 Rule</li></ol></div><pre class="codeinput"><span class="comment">% Let's Deffine Function of Integration</span>
+f = @(x)sin(x).^2-2*x.*sin(x)+1;
+</pre><p><b>Simpson's 1/3 Rule</b></p><p>Following is Optimized Algorithm for Simpson's 1/3 Rule:</p><pre class="language-matlab">
+<span class="keyword">function</span> int = Simpson13(f, nSubInt, a, b)
+    n = nSubInt * 2;
+    h = (b-a)/n;
+    x = a:h:b;
+    fx = f(x);
+    int = fx(1)+fx(n+1);
+    int = int+4*sum(fx(2:2:(n)))+2*sum(fx(3:2:(n-1)));
+    int = int * (b-a)/(3*n);
+<span class="keyword">end</span>
+
+</pre><pre class="codeinput"><span class="comment">% Since n is 12 but in Simpson's 1/3 Rule we only have n/2 sub intervals so</span>
+int1 = Simpson13(f,6,0.75,1.75);
+fprintf(<span class="string">'Simpson 1/3 Result: %g\n'</span>,int1);
+</pre><pre class="codeoutput">Simpson 1/3 Result: -0.489018
+</pre><p><b>Simpson's 3/8 Rule</b></p><pre class="language-matlab">
+<span class="keyword">function</span> int = Simpson38(f, nSubInt, a, b)
+    n = nSubInt * 3;
+    h = (b-a)/n;
+    x = a:h:b;
+    fx = f(x);
+    int = fx(1)+fx(n+1);
+    int = int + 3*sum(fx(2:3:(n-1)))+3*sum(fx(3:3:n))+2*sum(fx(4:3:(n-2)));
+    int = int * (3*h/8);
+<span class="keyword">end</span>
+
+</pre><pre class="codeinput"><span class="comment">% Since n is 12 but in Simpson's 3/8 Rule we only have n/3 sub intervals so</span>
+int2 = Simpson38(f,6,0.75,1.75);
+fprintf(<span class="string">'Simpson 3/8 Result: %g\n'</span>,int2);
+</pre><pre class="codeoutput">Simpson 3/8 Result: -0.489019
+</pre><p>Following Comparision shows there is a little difference between result of <i>Simpson's 1/3 Rule</i> and <i>Simpson 3/8 Rule</i>.</p><pre class="codeinput">disp(int2-int1)
+</pre><pre class="codeoutput">    -8.196000051974295e-07
+</pre><div><ul><li>Error of both rules is of order of 4</li><li>Only difference in error is factor 8/27</li><li>Thus <b>Simpson's 1/3 Rule</b> error is 8/27 times the error of 3/8 Rule</li><li>From Code Point of view, Simpson's 3/8 Rule is better for serial code execution whereas Simpson's 3/8 is useful when parallel execution is required to accelerate computations</li></ul></div><h2 id="11">Question 3</h2><h2 id="12">Disclaimer</h2><p>This Assignment contains implementation of few <i>Numerical Methods</i> which are highly optimized and vectorized to provide maximum performance without loss of accuracy. These methods are not copied from internet source but made by myself to test my knowledge of matlab.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Numerical Methods
 % *Assignment 3*
-%% Question 1)
+% 
+% In this assignment, We will compare following properties of each method
+%
+% # Accuracy
+% # Number of Iterations
+% # Average CPU Cost per iteration
+%
+%% Question 1
 % In this question, we will compare three different methods for finding
 % roots of equation:
 % 
 % # False-Position Method
 % # Secant Method
 % # Newton's Method
-% 
-% We will compare following properties of each method
-%
-% # Accuracy
-% # Number of Iterations
-% # Average CPU Cost per iteration
-%
 
 % Lets Define Function
 f = @(x) 230*x^4 + 18*x^3 + 9*x^2 - 221*x - 9; % Similar to Inline but symbolically
@@ -337,5 +371,68 @@ t = cputime;
 [x, n, e] = NewtonMethod(f, df, 1.5, 10^-6, Inf);
 t = cputime - t;
 fprintf(sFormat,x,n,e,t*1000/n);
+%%
+% Thus we can compare results as following
+% 
+% * CPU time per iteration is too small to be measured
+% * _False Position Method_ provides reasonable result within interval as
+% compared to other methods which don't remain in interval
+% * Although _Secant Method_ for first solution converges quicker then
+% _Newton's Method_ but in general *Newton's Method* is more robust and has
+% high convergance rate as compared to _Secant Method_
+
+%% Question 2
+% In this question we will compare two methods specifically simpson's
+% methods for finding integral of function on given interval:
+%
+% # Simpson's 1/3 Rule
+% # Simpson's 3/8 Rule
+%
+
+% Let's Deffine Function of Integration
+f = @(x)sin(x).^2-2*x.*sin(x)+1;
+
+%%
+% *Simpson's 1/3 Rule*
+%
+% Following is Optimized Algorithm for Simpson's 1/3 Rule:
+%
+% <include>Simpson13.m</include>
+%
+
+% Since n is 12 but in Simpson's 1/3 Rule we only have n/2 sub intervals so
+int1 = Simpson13(f,6,0.75,1.75);
+fprintf('Simpson 1/3 Result: %g\n',int1);
+
+%%
+% *Simpson's 3/8 Rule*
+%
+% <include>Simpson38.m</include>
+%
+
+% Since n is 12 but in Simpson's 3/8 Rule we only have n/3 sub intervals so
+int2 = Simpson38(f,6,0.75,1.75);
+fprintf('Simpson 3/8 Result: %g\n',int2);
+
+%%
+% Following Comparision shows there is a little difference between result
+% of _Simpson's 1/3 Rule_ and _Simpson 3/8 Rule_. 
+disp(int2-int1)
+%%
+% * Error of both rules is of order of 4
+% * Only difference in error is factor 8/27
+% * Thus *Simpson's 1/3 Rule* error is 8/27 times the error of 3/8 Rule
+% * From Code Point of view, Simpson's 3/8 Rule is better for serial code
+% execution whereas Simpson's 3/8 is useful when parallel execution is
+% required to accelerate computations
+
+%% Question 3
+
+
+%% Disclaimer
+% This Assignment contains implementation of few _Numerical Methods_ which
+% are highly optimized and vectorized to provide maximum performance
+% without loss of accuracy. These methods are not copied from internet
+% source but made by myself to test my knowledge of matlab.
 ##### SOURCE END #####
 --></body></html>
