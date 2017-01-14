@@ -1,0 +1,341 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Numerical Methods</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-01-14"><meta name="DC.source" content="assign3x.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Numerical Methods</h1><!--introduction--><p><b>Assignment 3</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 1)</a></li></ul></div><h2 id="1">Question 1)</h2><p>In this question, we will compare three different methods for finding roots of equation:</p><div><ol><li>False-Position Method</li><li>Secant Method</li><li>Newton's Method</li></ol></div><p>We will compare following properties of each method</p><div><ol><li>Accuracy</li><li>Number of Iterations</li><li>Average CPU Cost per iteration</li></ol></div><pre class="codeinput"><span class="comment">% Lets Define Function</span>
+f = @(x) 230*x^4 + 18*x^3 + 9*x^2 - 221*x - 9; <span class="comment">% Similar to Inline but symbolically</span>
+<span class="comment">% Lets Define Derivative</span>
+df = @(x)  920*x^3 + 54*x^2 + 18*x - 221;
+<span class="comment">% Output Format</span>
+sFormat = <span class="string">'\tRoot: %g in %d Iterations\n\tWith Error %g and Time %gms per Iteration\n'</span>;
+</pre><p><b>False Position Method</b></p><p>Following is Algorithm of False Position Method</p><pre class="language-matlab">
+<span class="keyword">function</span> [x, n, e] = FalsePosition(f, a, b, err, nMax)
+    n = 0;
+    e = Inf;
+    fa = f(a);
+    fb = f(b);
+    c0 = 0;
+    <span class="keyword">while</span> n&lt;nMax &amp;&amp; e&gt;err
+        c1 = b - fb*(a-b)/(fa-fb);
+        e = abs((c1-c0)/c1);
+        fc = f(c1);
+        test = fc*fa;
+        <span class="keyword">if</span> test&lt;0
+            b = c1;
+            fb = fc;
+        <span class="keyword">elseif</span> test&gt;0
+            a = c1;
+            fa = fc;
+        <span class="keyword">else</span>
+            e = 0;
+        <span class="keyword">end</span>
+        c0 = c1;
+        n = n + 1;
+    <span class="keyword">end</span>
+    x = c0;
+<span class="keyword">end</span>
+
+</pre><pre class="codeinput">disp(<span class="string">'====================='</span>);
+disp(<span class="string">'False Position Method'</span>);
+disp(<span class="string">'====================='</span>);
+<span class="comment">% Solution 1 of Function</span>
+disp(<span class="string">'Solution of Function in Interval [-1, 0]:'</span>)
+t = cputime;
+[x, n, e] = FalsePosition(f, -1, 0, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+<span class="comment">% Solution 2 of Function</span>
+disp(<span class="string">'Solution of Function in Interval [0, 1]:'</span>)
+t = cputime;
+[x, n, e] = FalsePosition(f, 0, 1, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+</pre><pre class="codeoutput">=====================
+False Position Method
+=====================
+Solution of Function in Interval [-1, 0]:
+	Root: -0.0406593 in 21 Iterations
+	With Error 6.39015e-07 and Time 0ms per Iteration
+Solution of Function in Interval [0, 1]:
+	Root: 0.962398 in 8 Iterations
+	With Error 4.62744e-07 and Time 0ms per Iteration
+</pre><p><b>Secant Method</b></p><p>Following is Algorithm for Secant Method</p><pre class="language-matlab">
+<span class="keyword">function</span> [x, n, e] = SecantMethod(f, a, b, err, nMax)
+    n = 0;
+    e = Inf;
+    fa = f(a);
+    fb = f(b);
+    c0 = 0;
+    <span class="keyword">while</span> n&lt;nMax &amp;&amp; e&gt;err
+        c1 = b - fb*(a-b)/(fa-fb);
+        e = abs((c1-c0)/c1);
+        fc = f(c1);
+        
+        a = b;
+        b = c1;
+        fa = fb;
+        fb = fc;
+        
+        c0 = c1;
+        n = n + 1;
+    <span class="keyword">end</span>
+    x = c0;
+<span class="keyword">end</span>
+
+</pre><pre class="codeinput">disp(<span class="string">'====================='</span>);
+disp(<span class="string">'====Secant Method===='</span>);
+disp(<span class="string">'====================='</span>);
+<span class="comment">% Solution 1 of Function</span>
+disp(<span class="string">'Solution of Function For Interval [-1, 0]:'</span>)
+t = cputime;
+[x, n, e] = SecantMethod(f, -1, 0, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+<span class="comment">% Solution 2 of Function</span>
+disp(<span class="string">'Solution of Function For Interval [0, 1]:'</span>)
+t = cputime;
+[x, n, e] = SecantMethod(f, 0, 1, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+<span class="comment">% Since for interval [0,1] we got same solution so we change our interval</span>
+disp(<span class="string">'Solution of Function For Interval [1, 2]:'</span>)
+t = cputime;
+[x, n, e] = SecantMethod(f, 0, 1, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+</pre><pre class="codeoutput">=====================
+====Secant Method====
+=====================
+Solution of Function For Interval [-1, 0]:
+	Root: -0.0406593 in 4 Iterations
+	With Error 6.33017e-07 and Time 7.8125ms per Iteration
+Solution of Function For Interval [0, 1]:
+	Root: -0.0406593 in 12 Iterations
+	With Error 4.60525e-12 and Time 0ms per Iteration
+Solution of Function For Interval [1, 2]:
+	Root: -0.0406593 in 12 Iterations
+	With Error 4.60525e-12 and Time 0ms per Iteration
+</pre><p><b>Newton's Method</b></p><p>Following is Algorithm for Newton's Method</p><pre class="language-matlab">
+<span class="keyword">function</span> [x, n, e] = NewtonMethod(f, df, xi, err, nMax)
+    n = 0;
+    e = Inf;
+    x = 0;
+    
+    <span class="keyword">while</span> n&lt;nMax &amp;&amp; e&gt;err
+        x = xi - f(xi)/df(xi);
+        
+        e = abs((x-xi)/x);
+        
+        xi = x;
+        n = n + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+</pre><pre class="codeinput">disp(<span class="string">'====================='</span>);
+disp(<span class="string">'====Newton Method===='</span>);
+disp(<span class="string">'====================='</span>);
+<span class="comment">% Solution 1 of Function</span>
+disp(<span class="string">'Solution of Function For Initial Value -0.5:'</span>)
+t = cputime;
+[x, n, e] = NewtonMethod(f, df, -0.5, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+<span class="comment">% Solution 2 of Function</span>
+disp(<span class="string">'Solution of Function For Initial Value 0.5:'</span>)
+t = cputime;
+[x, n, e] = NewtonMethod(f, df, 0.5, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+<span class="comment">% Since for initial guess 0.5 we got same solution so we change our guess</span>
+disp(<span class="string">'Solution of Function For Initial guess:'</span>)
+t = cputime;
+[x, n, e] = NewtonMethod(f, df, 1.5, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+</pre><pre class="codeoutput">=====================
+====Newton Method====
+=====================
+Solution of Function For Initial Value -0.5:
+	Root: -0.0406593 in 5 Iterations
+	With Error 3.07187e-15 and Time 0ms per Iteration
+Solution of Function For Initial Value 0.5:
+	Root: -0.0406593 in 6 Iterations
+	With Error 7.27413e-10 and Time 0ms per Iteration
+Solution of Function For Initial guess:
+	Root: 0.962398 in 6 Iterations
+	With Error 3.92917e-08 and Time 0ms per Iteration
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Numerical Methods
+% *Assignment 3*
+%% Question 1)
+% In this question, we will compare three different methods for finding
+% roots of equation:
+% 
+% # False-Position Method
+% # Secant Method
+% # Newton's Method
+% 
+% We will compare following properties of each method
+%
+% # Accuracy
+% # Number of Iterations
+% # Average CPU Cost per iteration
+%
+
+% Lets Define Function
+f = @(x) 230*x^4 + 18*x^3 + 9*x^2 - 221*x - 9; % Similar to Inline but symbolically
+% Lets Define Derivative
+df = @(x)  920*x^3 + 54*x^2 + 18*x - 221;
+% Output Format
+sFormat = '\tRoot: %g in %d Iterations\n\tWith Error %g and Time %gms per Iteration\n';
+
+%%
+% *False Position Method*
+%
+% Following is Algorithm of False Position Method
+% 
+% <include>FalsePosition.m</include>
+%
+
+disp('=====================');
+disp('False Position Method');
+disp('=====================');
+% Solution 1 of Function
+disp('Solution of Function in Interval [-1, 0]:')
+t = cputime;
+[x, n, e] = FalsePosition(f, -1, 0, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+% Solution 2 of Function
+disp('Solution of Function in Interval [0, 1]:')
+t = cputime;
+[x, n, e] = FalsePosition(f, 0, 1, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+
+%% 
+% *Secant Method*
+%
+% Following is Algorithm for Secant Method
+%
+% <include>SecantMethod.m</include>
+%
+
+disp('=====================');
+disp('====Secant Method====');
+disp('=====================');
+% Solution 1 of Function
+disp('Solution of Function For Interval [-1, 0]:')
+t = cputime;
+[x, n, e] = SecantMethod(f, -1, 0, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+% Solution 2 of Function
+disp('Solution of Function For Interval [0, 1]:')
+t = cputime;
+[x, n, e] = SecantMethod(f, 0, 1, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+% Since for interval [0,1] we got same solution so we change our interval
+disp('Solution of Function For Interval [1, 2]:')
+t = cputime;
+[x, n, e] = SecantMethod(f, 0, 1, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+
+%%
+% *Newton's Method*
+%
+% Following is Algorithm for Newton's Method
+%
+% <include>NewtonMethod.m</include>
+%
+
+disp('=====================');
+disp('====Newton Method====');
+disp('=====================');
+% Solution 1 of Function
+disp('Solution of Function For Initial Value -0.5:')
+t = cputime;
+[x, n, e] = NewtonMethod(f, df, -0.5, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+% Solution 2 of Function
+disp('Solution of Function For Initial Value 0.5:')
+t = cputime;
+[x, n, e] = NewtonMethod(f, df, 0.5, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+% Since for initial guess 0.5 we got same solution so we change our guess
+disp('Solution of Function For Initial guess:')
+t = cputime;
+[x, n, e] = NewtonMethod(f, df, 1.5, 10^-6, Inf);
+t = cputime - t;
+fprintf(sFormat,x,n,e,t*1000/n);
+##### SOURCE END #####
+--></body></html>
