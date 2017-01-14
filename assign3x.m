@@ -161,7 +161,20 @@ disp(int2-int1)
 % required to accelerate computations
 
 %% Question 3
+% In this question, we will solve three equations each function of three
+% variable to achieve accuracy of 10^-6 using newton's method for solution
+% of multiple equations
+%
+% <include>NewtonMethodMulti.m</include>
+%
 
+% Lets Define Equations
+F = {@(x1,x2,x3)6*x1-2*cos(x2*x3)-1,
+    @(x1,x2,x3)9*x2+sqrt(x1^2+sin(x3)+1.06)+0.9,
+    @(x1,x2,x3)60*x3+3*exp(-x1*x2)+10*pi-3};
+xi = [1;2;3]; % MUST be A COLUMN VECTOR
+[x,n,e]=NewtonMethodMulti(F,xi,1e-10,Inf);
+fprintf('Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithin %d Iterations with accuracy of %g\n',x(1),x(2),x(3),n,e);
 
 %% Disclaimer
 % This Assignment contains implementation of few _Numerical Methods_ which

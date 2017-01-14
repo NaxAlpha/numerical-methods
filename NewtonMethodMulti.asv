@@ -1,0 +1,31 @@
+% F is cell array of anonymous functions which are to be zeroed
+% Number of elements in F is same as number of variables in each f
+% xi is initial guess column vector with length equal to F's len.
+function [x, n, e] = NewtonMethodMulti(F, xi, err, nMax)
+    n = 0;
+    e = Inf;
+    x = 0;
+    l = length(F);
+    
+    f = zeros(l,1);
+    J = zeros(l,l);
+    
+    x = num2cell(xi);
+    for i=1:l
+        Fi = F(i);
+        f(i)=Fi(x{:});
+
+        for j=1:l
+            J(i,j)=0;
+        end
+    end
+    
+    while n<nMax && e>err
+        x = xi - F(xi)/df(xi);
+        
+        e = abs((x-xi)/x);
+        
+        xi = x;
+        n = n + 1;
+    end
+end

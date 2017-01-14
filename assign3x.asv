@@ -151,8 +151,26 @@ fprintf('Simpson 3/8 Result: %g\n',int2);
 %%
 % Following Comparision shows there is a little difference between result
 % of _Simpson's 1/3 Rule_ and _Simpson 3/8 Rule_. 
+disp(int2-int1)
+%%
+% * Error of both rules is of order of 4
+% * Only difference in error is factor 8/27
+% * Thus *Simpson's 1/3 Rule* error is 8/27 times the error of 3/8 Rule
+% * From Code Point of view, Simpson's 3/8 Rule is better for serial code
+% execution whereas Simpson's 3/8 is useful when parallel execution is
+% required to accelerate computations
+
+%% Question 3
+% In this question, we will solve three equations each function of three
+% variable to achieve accuracy of 10^-6 using newton's method for solution
+% of multiple equations
 %
-% * Error
+% <include>NewtonMethodMulti.m</include>
+%
+
+% Lets Define Equations
+F = 
+
 
 %% Disclaimer
 % This Assignment contains implementation of few _Numerical Methods_ which
