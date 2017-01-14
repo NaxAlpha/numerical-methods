@@ -1,6 +1,0 @@
-function sum = Simpson13(f, nSubInt, a, b)
-    n = nSubInt * 2;
-    h = (b-a)/n;
-    x = a:h:b;
-    fx = 
-end
