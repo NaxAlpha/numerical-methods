@@ -23,7 +23,7 @@ function [x, n, e] = NewtonMethodMulti(F, xi, err, nMax)
         
         x = xi - (pinv(J)*f);
         
-        e = max(abs((x-xi)));
+        e = max(abs(x-xi));
         
         xi = x;
         n = n + 1;

@@ -77,7 +77,7 @@ fprintf(sFormat,x,n,e,t*1000/n);
 % Since for interval [0,1] we got same solution so we change our interval
 disp('Solution of Function For Interval [1, 2]:')
 t = cputime;
-[x, n, e] = SecantMethod(f, 0, 1, 10^-6, Inf);
+[x, n, e] = SecantMethod(f, 1, 2, 10^-6, Inf);
 t = cputime - t;
 fprintf(sFormat,x,n,e,t*1000/n);
 
@@ -184,9 +184,13 @@ fprintf('Got Solution with \n\tx1=%g\tx2=%g\tx3=%g\n\tWithin %d Iterations with 
 %% Question 4
 % In this Question, we are going to solve 3rd order ordinary differential
 % equation using Runge-Kutta Method of second order. 
+%
+% <include>RK32.m</include>
+%
+
 
 % Lets ODE define function:
-f = @(t,y,p,q)q/t - 3*p/t^2 + 4*y/t^3 + 5*log(t)-9;
+f = @(t,y,p,q)q/t - 3*p/t^2 + 4*y/t^3 + 5*log(t)+9;
 % Lets Define Real solution
 g = @(t)-t^2+t*cos(log(t))+t*sin(log(t))+t^3*log(t);
 

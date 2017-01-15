@@ -6,7 +6,7 @@ function [x, n, e] = SecantMethod(f, a, b, err, nMax)
     c0 = 0;
     while n<nMax && e>err
         c1 = b - fb*(a-b)/(fa-fb);
-        e = abs((c1-c0)/c1);
+        e = abs(c1-c0);
         fc = f(c1);
         
         a = b;

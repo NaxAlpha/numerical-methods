@@ -6,7 +6,7 @@ function [x, n, e] = NewtonMethod(f, df, xi, err, nMax)
     while n<nMax && e>err
         x = xi - f(xi)/df(xi);
         
-        e = abs((x-xi)/x);
+        e = abs(x-xi);
         
         xi = x;
         n = n + 1;
